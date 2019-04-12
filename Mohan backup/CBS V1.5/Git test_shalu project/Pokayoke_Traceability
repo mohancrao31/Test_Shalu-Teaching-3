@@ -27,6 +27,8 @@ function PokaYoke_full() {
   var desccomprotect = activeSheet.getRange('G1:G1000').protect();
   var qtyprotect = activeSheet.getRange('H1:H1000').protect();
   var batchyprotect = activeSheet.getRange('K1:K1000').protect();
+  var serprotect = activeSheet.getRange('L1:L1000').protect();
+
 
   
   
