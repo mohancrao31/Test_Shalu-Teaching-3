@@ -1,0 +1,99 @@
+/** @OnlyCurrentDoc */
+//Function to ensure no incorrect data feed from technician
+function PokaYoke_full() {
+  var app = SpreadsheetApp;
+  var activeSheet = app.getActiveSpreadsheet().getActiveSheet();
+  var allprotection = activeSheet.protect();//to protect the entire sheet.
+  
+  
+// Remove all range protections in the active sheet that the user has permission to edit.
+  var ss = SpreadsheetApp.getActiveSheet().activate();
+  var protections = ss.getProtections(SpreadsheetApp.ProtectionType.RANGE);
+  for (var i = 0; i < protections.length; i++) {
+  var protection = protections[i];
+  if (protection.canEdit()) {
+    protection.remove();
+  }
+}
+  
+//set protection range for BOM and Production order details
+//edit control for each range
+   
+  var snoprotect = activeSheet.getRange('A1:A1000').protect(); 
+  var orderprotect = activeSheet.getRange('B1:B1000').protect(); 
+  var sfgprotect = activeSheet.getRange('C1:C1000').protect();
+   var descprotect = activeSheet.getRange('D1:D1000').protect();
+  var compmatprotect = activeSheet.getRange('F1:F1000').protect();
+  var desccomprotect = activeSheet.getRange('G1:G1000').protect();
+  var qtyprotect = activeSheet.getRange('H1:H1000').protect();
+  var batchyprotect = activeSheet.getRange('K1:K1000').protect();
+
+  
+  
+ //Serial Number Protection 
+   
+  for (var i=2; i<100; i++)
+  {  var servalue = activeSheet.getRange(i, 12).getValue()
+    if(servalue == "")
+    { var serprotection = activeSheet.getRange(i, 10).protect();
+          activeSheet.getRange(i, 10).setBackground('#b7b7b7');
+    
+         
+         } else if(servalue == "y")
+         {  activeSheet.getRange(i, 10).setBackground('#00ff00');
+                      
+    }
+ 
+  
+  }
+  
+
+  //Batch number protection in the sheet
+   for (var j=2; j<100; j++)
+   { var BatchValue = activeSheet.getRange(j, 11).getValue()
+         //if part is not batch managed
+        if(BatchValue == "") 
+        { var batprotection = activeSheet.getRange(j, 9).protect();
+          activeSheet.getRange(j, 9).setBackground('#b7b7b7');
+        
+        } // if part is batch managed and batch number is external
+         else if(BatchValue == "y")
+         { activeSheet.getRange(j, 9).setBackground('#00ff00')
+         }
+   
+         // if part is batch managed, but system generated
+          else if(Batchvalue == "system")
+          {var batprotection = activeSheet.getRange(j, 9).protect();
+          activeSheet.getRange(j, 9).setBackground('#FFFF00');
+        
+   }
+   } 
+  
+   //Set Protection for Header material and color code for header material  
+  for (var i = 2; i<100; i++)
+       {var headervalue = activeSheet.getRange(i, 3).getValue();
+        if(headervalue == "")
+        {var headerprotection = activeSheet.getRange(i, 5).protect();
+         activeSheet.getRange(i, 5).setBackground('#b7b7b7');
+         
+        
+        } 
+        else {activeSheet.getRange(i, 5).setBackground('#00ff00');
+
+}
+ 
+}
+  var protections = ss.getProtections(SpreadsheetApp.ProtectionType.RANGE);
+  for (var i = 0; i < protections.length; i++) {
+  var protection = protections[i];
+  var me = Session.getEffectiveUser();
+  protection.addEditor(me);
+  protection.removeEditors(protection.getEditors());
+        if (protection.canDomainEdit()) {
+        protection.setDomainEdit(false);
+}
+
+} 
+}
+
+
